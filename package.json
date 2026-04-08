@@ -1,0 +1,13 @@
+{
+  "name": "nodejs-test-site",
+  "version": "1.0.0",
+  "description": "一个简单的 NodeJS 测试网页",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": ["nodejs", "test", "web"],
+  "author": "",
+  "license": "MIT"
+}

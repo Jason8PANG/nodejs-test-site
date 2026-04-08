@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NodeJS 测试网页</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🚀 NodeJS 测试网页</h1>
+      <p class="subtitle">一个简单的 NodeJS HTTP 服务器演示</p>
+    </header>
+
+    <main>
+      <section class="card">
+        <h2>✅ 服务器状态</h2>
+        <div id="status" class="status">
+          <span class="loading">正在检查...</span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>📦 项目信息</h2>
+        <ul class="info-list">
+          <li><strong>框架:</strong> NodeJS (原生 HTTP)</li>
+          <li><strong>端口:</strong> 3000</li>
+          <li><strong>版本:</strong> 1.0.0</li>
+          <li><strong>许可证:</strong> MIT</li>
+        </ul>
+      </section>
+
+      <section class="card">
+        <h2>🎮 交互测试</h2>
+        <button id="clickBtn" class="btn">点击我</button>
+        <p id="clickCount">点击次数：<span id="count">0</span></p>
+      </section>
+
+      <section class="card">
+        <h2>📝 功能列表</h2>
+        <ul>
+          <li>✅ 静态文件服务</li>
+          <li>✅ API 端点 (/api/health)</li>
+          <li>✅ 路由处理</li>
+          <li>✅ 日志记录</li>
+        </ul>
+      </section>
+    </main>
+
+    <footer>
+      <p>Created with ❤️ using NodeJS</p>
+      <p class="timestamp">最后更新：<span id="updateTime"></span></p>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
