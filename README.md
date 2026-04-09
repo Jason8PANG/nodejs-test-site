@@ -82,6 +82,124 @@ npm run dev
 npm start
 ```
 
+## 🐳 Docker 部署
+
+### 方式一：使用 Dockerfile
+
+#### 1. 构建镜像
+
+```bash
+docker build -t nodejs-test-site .
+```
+
+#### 2. 运行容器（默认端口 3000）
+
+```bash
+docker run -d -p 3000:3000 --name nodejs-test-site nodejs-test-site
+```
+
+#### 3. 访问服务
+
+```bash
+# 本地访问
+http://localhost:3000
+
+# 健康检查
+curl http://localhost:3000/api/health
+```
+
+---
+
+### 方式二：使用 Docker Compose（推荐）
+
+#### 1. 启动服务
+
+```bash
+docker-compose up -d
+```
+
+#### 2. 查看日志
+
+```bash
+docker-compose logs -f
+```
+
+#### 3. 停止服务
+
+```bash
+docker-compose down
+```
+
+---
+
+### 🔧 修改端口
+
+#### 方法 1：环境变量（推荐）
+
+```bash
+# 使用 8080 端口
+docker run -d -p 8080:3000 -e PORT=3000 --name nodejs-test-site nodejs-test-site
+
+# 或使用 docker-compose
+HOST_PORT=8080 docker-compose up -d
+```
+
+#### 方法 2：修改 docker-compose.yml
+
+```yaml
+ports:
+  - "8080:3000"  # 主机端口：容器端口
+```
+
+#### 方法 3：修改 .env 文件
+
+创建 `.env` 文件：
+
+```bash
+# .env
+HOST_PORT=8080
+```
+
+然后运行：
+
+```bash
+docker-compose up -d
+```
+
+---
+
+### 📋 Docker 部署常见问题
+
+| 问题 | 解决方案 |
+|------|----------|
+| 端口被占用 | 修改 `-p` 参数的主机端口，如 `-p 8080:3000` |
+| 容器无法启动 | 检查日志 `docker logs nodejs-test-site` |
+| 健康检查失败 | 确认容器内端口为 3000，检查防火墙 |
+| 需要持久化 | 添加 `-v` 挂载卷，如 `-v ./logs:/app/logs` |
+
+---
+
+### 🚀 生产环境部署建议
+
+```bash
+# 1. 使用特定版本 NodeJS
+FROM node:18-alpine  # 或 node:20-alpine
+
+# 2. 设置生产环境
+ENV NODE_ENV=production
+
+# 3. 使用非 root 用户运行
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001
+USER nodejs
+
+# 4. 添加健康检查
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget -q --spider http://localhost:3000/api/health || exit 1
+```
+
+---
+
 ## 📄 许可证
 
 MIT License
