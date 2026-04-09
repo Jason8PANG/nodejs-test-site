@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .btn-login:hover {
+            transform: translateY(-2px);
+        }
+        .message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        .message.error {
+            background: #fee;
+            color: #c33;
+            display: block;
+        }
+        .message.success {
+            background: #efe;
+            color: #3c3;
+            display: block;
+        }
+        .demo-credentials {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #666;
+        }
+        .demo-credentials strong {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>🔐 用户登录</h1>
+        
+        <div id="message" class="message"></div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">用户名</label>
+                <input type="text" id="username" name="username" required placeholder="请输入用户名">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">密码</label>
+                <input type="password" id="password" name="password" required placeholder="请输入密码">
+            </div>
+            
+            <button type="submit" class="btn-login">登录</button>
+        </form>
+        
+        <div class="demo-credentials">
+            <strong>测试账号：</strong><br>
+            用户名：admin<br>
+            密码：admin123
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const messageDiv = document.getElementById('message');
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    messageDiv.className = 'message success';
+                    messageDiv.textContent = '✅ 登录成功！正在跳转...';
+                    localStorage.setItem('token', data.token);
+                    setTimeout(() => {
+                        window.location.href = '/dashboard.html';
+                    }, 1000);
+                } else {
+                    messageDiv.className = 'message error';
+                    messageDiv.textContent = '❌ ' + data.message;
+                }
+            } catch (error) {
+                messageDiv.className = 'message error';
+                messageDiv.textContent = '❌ 网络错误，请稍后重试';
+            }
+        });
+    </script>
+</body>
+</html>
