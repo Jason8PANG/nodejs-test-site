@@ -16,7 +16,7 @@
 ### 1. 克隆项目
 
 ```bash
-git clone <你的仓库地址>
+git clone https://github.com/Jason8PANG/nodejs-test-site
 cd nodejs-test-site
 ```
 
